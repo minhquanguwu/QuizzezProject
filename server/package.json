@@ -1,25 +1,28 @@
 {
-    "name": "server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "src/server.ts",
-    "scripts": {
-        "compile": "tsc",
-        "dev": "ts-node-dev --respawn ./src/server.ts",
-        "start": "npm run compile && nodemon ./dist/server.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "cors": "^2.8.5",
-        "dotenv": "^16.4.5",
-        "express": "^4.19.2",
-        "mongoose": "^8.3.4"
-    },
-    "devDependencies": {
-        "nodemon": "^3.1.0",
-        "ts-node-dev": "^2.0.0",
-        "typescript": "^5.4.5"
-    }
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "scripts": {
+    "compile": "tsc",
+    "dev": "ts-node-dev --respawn ./src/index.ts",
+    "start": "npm run compile && nodemon ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
 }
