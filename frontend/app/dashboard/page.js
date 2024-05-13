@@ -15,7 +15,7 @@ export default function Dashboard() {
                 <Card
                     className="py-4 bg-orange-300 h-[350px] "
                     isPressable
-                    onClick={() => router.push(`\quiz`)}
+                    onClick={() => router.push(`/dashboard/quiz`)}
                 >
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                         <p className="text-tiny font-bold">Explore the world!</p>
@@ -36,7 +36,7 @@ export default function Dashboard() {
                 <Card
                     className="py-4 bg-violet-300 h-[350px]"
                     isPressable
-                    onClick={() => router.push(`\study`)}
+                    onClick={() => router.push(`/dashboard/study`)}
                 >
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                         <p className="text-tiny font-bold">Reading new information</p>

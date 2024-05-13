@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }) {
             <div className="w-full flex-none md:w-64 bg-white">
                 <SideNav />
             </div>
-            <div className="flex-grow md:overflow-y-auto md:p-12 flex justify-center ">
+            <div className="flex-grow md:overflow-y-auto md:p-8 flex justify-center ">
                 {children}
             </div>
         </div>

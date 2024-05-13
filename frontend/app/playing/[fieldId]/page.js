@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { getLayout } from "next/router";
 import AnswerCard from "../../ui/Card";
 import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
@@ -9,7 +9,6 @@ import { CSSTransition } from "react-transition-group";
 import { Button, Image } from "@nextui-org/react";
 export default function Quiz() {
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
-    const [isChoosingAnswer, setIsChoosingAnswer] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [gaze, setGaze] = useState(false);
@@ -90,32 +89,8 @@ export default function Quiz() {
             ],
         },
     ];
-    const question = "What is the capital of France?";
-    const answerList = [
-        {
-            body: "Answer 1",
-            image: "https://nextui.org/images/hero-card.jpeg",
-            isCorrect: false,
-        },
-        {
-            body: "Answer 2",
-            image: "https://nextui.org/images/hero-card.jpeg",
-            isCorrect: false,
-        },
-        {
-            body: "Answer 3",
-            image: "https://nextui.org/images/hero-card.jpeg",
-            isCorrect: false,
-        },
-        {
-            body: "Answer 4",
-            image: "https://nextui.org/images/hero-card.jpeg",
-            isCorrect: true,
-        },
-    ];
 
     const handleAnswerClick = (isCorrect) => {
-        setIsChoosingAnswer(true);
         setIsAnswerCorrect(isCorrect);
         setShowAnswer(true);
     };
@@ -124,7 +99,6 @@ export default function Quiz() {
         if (showAnswer) {
             const timer = setTimeout(() => {
                 setIsAnswerCorrect(false);
-                setIsChoosingAnswer(false);
                 setShowAnswer(false);
                 if (currentQuestionIndex < questionList.length - 1) {
                     setCurrentQuestionIndex((currentQuestionIndex) => currentQuestionIndex + 1);
@@ -165,7 +139,7 @@ export default function Quiz() {
                                 answer={answer}
                                 key={index}
                                 handleAnswerClick={() => handleAnswerClick(answer.isCorrect)}
-                                isChoosingAnswer={isChoosingAnswer}
+                                isChoosingAnswer={showAnswer}
                                 index={index}
                             />
                         </CSSTransition>
@@ -175,7 +149,7 @@ export default function Quiz() {
             <div className="flex flex-row row-span-2 w-full h-full ">
                 <div
                     className={`flex text-white items-center justify-end w-full mt-2 transform transition-all duration-300 ${
-                        isChoosingAnswer
+                        showAnswer
                             ? isAnswerCorrect
                                 ? "bg-green-500 translate-y-0 opacity-100"
                                 : "bg-red-500 translate-y-0 opacity-100"

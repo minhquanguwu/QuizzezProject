@@ -20,7 +20,7 @@ export default function Dashboard() {
     const router = useRouter();
 
     const handleCardClick = (type) => {
-        router.push(`/quiz/${type}`);
+        router.push(`/playing/${type}`);
     };
 
     const questionList = [
@@ -118,14 +118,20 @@ export default function Dashboard() {
                 id="gaze"
                 className="absolute none w-24 h-24 rounded-full border-2 border-white border-opacity-20 shadow-lg pointer-events-none z-50 bg-red-400"
             ></div>
-            <div className="flex flex-row">
-                <div className="uppercase">Choose your field</div>
+            <div className="flex flex-row justify-center font-sans">
+                <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+                    <span> Select a </span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+                        category
+                    </span>{" "}
+                    to explore
+                </h1>
             </div>
             <div className="max-w-[1000px] gap-6 grid grid-cols-12 grid-rows-2 px-8">
                 {questionList.map((question, index) => (
                     <Card
                         ref={(el) => (cardRefs.current[index] = el)}
-                        className="col-span-2 sm:col-span-4 h-[300px]"
+                        className="col-span-2 sm:col-span-4 h-[280px]"
                         key={index}
                         isPressable
                         onClick={() => handleCardClick(question.type)}
