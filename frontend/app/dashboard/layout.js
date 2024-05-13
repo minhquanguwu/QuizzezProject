@@ -4,11 +4,11 @@ import SideNav from "../ui/sidenav";
 
 export default function DashboardLayout({ children }) {
     return (
-        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-            <div className="w-full flex-none md:w-64">
+        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden bg-[#F2F2F2]">
+            <div className="w-full flex-none md:w-64 bg-white">
                 <SideNav />
             </div>
-            <div className="flex-grow md:overflow-y-auto md:p-12 flex justify-center m-2">
+            <div className="flex-grow md:overflow-y-auto md:p-12 flex justify-center ">
                 {children}
             </div>
         </div>

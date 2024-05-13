@@ -6,7 +6,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { CardBody, Card, Chip } from "@nextui-org/react";
 import { CSSTransition } from "react-transition-group";
-import { Button } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 export default function Quiz() {
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
     const [isChoosingAnswer, setIsChoosingAnswer] = useState(false);
@@ -154,9 +154,9 @@ export default function Quiz() {
             </div>
             <div className="grid grid-rows-10 text-white bg-fuchsia-950 rounded-lg p-2 mt-4 row-span-12">
                 <div className="flex items-center justify-center row-span-5">
-                    <h1 className="text-4xl font-bold font-sans">
+                    <div className="text-4xl font-bold font-sans">
                         {questionList[currentQuestionIndex].question}
-                    </h1>
+                    </div>
                 </div>
                 <div className="flex flex-row justify-between row-span-5">
                     {questionList[currentQuestionIndex].answerList.map((answer, index) => (
@@ -174,7 +174,7 @@ export default function Quiz() {
             </div>
             <div className="flex flex-row row-span-2 w-full h-full ">
                 <div
-                    className={`text-white w-full mt-2 transform transition-all duration-300 ${
+                    className={`flex text-white items-center justify-end w-full mt-2 transform transition-all duration-300 ${
                         isChoosingAnswer
                             ? isAnswerCorrect
                                 ? "bg-green-500 translate-y-0 opacity-100"
@@ -182,8 +182,28 @@ export default function Quiz() {
                             : "bg-inherit translate-y-full opacity-0"
                     }`}
                 >
-                    <Card>
-                        <CardBody>{isAnswerCorrect ? " Correct Answer" : " Wrong Answer"}</CardBody>
+                    <Card className="border rounded-lg font-serif shadow-md w-[180px] mr-4">
+                        <CardBody className="flex items-center">
+                            {isAnswerCorrect ? (
+                                <>
+                                    <span className="text-green-500 mr-2">Correct Answer</span>
+                                    <Image
+                                        alt="Correct Answer Icon"
+                                        className="w-6 h-6"
+                                        src="/image/correctIcon.png"
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <span className="text-red-500 mr-2">Wrong Answer</span>
+                                    <Image
+                                        alt="Wrong Answer Icon"
+                                        className="w-6 h-6"
+                                        src="/image/wrongIcon.png"
+                                    />
+                                </>
+                            )}
+                        </CardBody>
                     </Card>
                 </div>
             </div>
