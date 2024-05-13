@@ -1,9 +1,10 @@
+import DBconnection from './config/connectDB';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import apiRoutes from './api/routes';
 dotenv.config();
-
+DBconnection()
 const PORT = 5500 || process.env.PORT;
 const app = express();
 
