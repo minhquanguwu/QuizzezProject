@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import QuestionController from '../controllers/questionController';
+import QuestionController from '../controllers/QuestionController';
 const questionRouter = Router();
 const questionCon = new QuestionController();
 questionRouter.get('/question/all', questionCon.getAllQuestion);

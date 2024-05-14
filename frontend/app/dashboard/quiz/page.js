@@ -4,11 +4,13 @@ import React, { useState, useRef, useEffect, use } from "react";
 import Script from "next/script";
 import { Image } from "@nextui-org/image";
 import { CardBody, Card, Chip, CardHeader, CardFooter, Button } from "@nextui-org/react";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 export default function Dashboard() {
     var gazeOnCardStart = null;
     var currentCard = null;
     const cardRefs = useRef([]);
-
+    const [progress, setProgress] = useState(0);
     const handleGaze = () => {
         // Starts eye tracking
         GazeCloudAPI.StartEyeTracking();
@@ -103,11 +105,14 @@ export default function Dashboard() {
         if (!gazeOnCard) {
             gazeOnCardStart = null;
             currentCard = null;
-        } else if (Date.now() - gazeOnCardStart >= 5000) {
-            console.log("bo m clicked");
-            currentCard.click();
-            gazeOnCardStart = null;
-            currentCard = null;
+        } else {
+            setProgress((Date.now() - gazeOnCardStart) / 30);
+            if (Date.now() - gazeOnCardStart >= 3000) {
+                console.log("bo m clicked");
+                currentCard.click();
+                gazeOnCardStart = null;
+                currentCard = null;
+            }
         }
     }
 
@@ -116,8 +121,15 @@ export default function Dashboard() {
             <Script src="https://api.gazerecorder.com/GazeCloudAPI.js" onLoad={handleGaze}></Script>
             <div
                 id="gaze"
-                className="absolute none w-24 h-24 rounded-full border-2 border-white border-opacity-20 shadow-lg pointer-events-none z-50 bg-red-400"
-            ></div>
+                className="absolute none w-24 h-24 rounded-full border-2 border-opacity-20 shadow-lg pointer-events-none z-50 "
+            >
+                <CircularProgressbar
+                    value={progress}
+                    text={`${Math.round(progress)}%`}
+                    background
+                />
+            </div>
+
             <div className="flex flex-row justify-center font-sans">
                 <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
                     <span> Select a </span>
