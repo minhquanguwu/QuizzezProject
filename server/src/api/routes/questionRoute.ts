@@ -8,4 +8,5 @@ questionRouter.get(
 	questionCon.getQuestionByCategory
 );
 questionRouter.post('/question/create', questionCon.createQuestion);
+questionRouter.post('/question/create/bulk', questionCon.createBulkQuestions);
 export default questionRouter;

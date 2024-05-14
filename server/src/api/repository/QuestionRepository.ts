@@ -54,4 +54,24 @@ export default class QuestionRepository {
 			};
 		}
 	};
+	public createBulkQuestions = async (questions: Question[]) => {
+		try {
+			console.log('Questions: ', questions);
+			// questions.forEach((newQuestion: Question) => {
+			// 	const category = newQuestion.getCategory();
+			// 	const question = newQuestion.getQuestion();
+			// 	const answerList = newQuestion.getAnswerList();
+			// 	return {
+			// 		category,
+			// 		question,
+			// 		answerList,
+			// 	};
+			// });
+			const query = await QuestionModel.insertMany(questions);
+			return { ok: true, data: query };
+		} catch (error) {
+			console.log('Error bulk inserting questions: ', error.message);
+			return { ok: false, data: null };
+		}
+	};
 }

@@ -19,7 +19,7 @@ export default class QuestionController {
 	};
 	public getQuestionByCategory = async (req: Request, res: Response) => {
 		const { category } = req.params;
-	
+
 		const { ok, data } = await new QuestionRepository().getQuestionByCategory(
 			String(category)
 		);
@@ -53,6 +53,28 @@ export default class QuestionController {
 		return res.status(200).json({
 			code: 200,
 			data,
+		});
+	};
+	public createBulkQuestions = async (req: Request, res: Response) => {
+		let questions = await req.body;
+		questions.forEach((question) => {
+			return new Question(
+				question.category,
+				question.question,
+				question.answerList
+			);
+		});
+		const { ok, data } = await new QuestionRepository().createBulkQuestions(
+			questions
+		);
+		if (!ok)
+			return res.status(400).json({
+				data: null,
+				code: 400,
+			});
+		return res.status(200).json({
+			data,
+			code: 200,
 		});
 	};
 }
