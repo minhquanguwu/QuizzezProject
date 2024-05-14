@@ -1,0 +1,3 @@
+- API:
+ - http://localhost:5500/api/question/all : Get all question
+ - http://localhost:5500/api/question/category/{category} : Get all question with category ==  {category}
