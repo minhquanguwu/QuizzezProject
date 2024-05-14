@@ -1,5 +1,8 @@
-import { Request, Response } from "express";
-const userController = (req: Request, res: Response) => {
-    return;
+import { Request, Response } from 'express';
+export default class UserController {
+	public constructor() {}
+	public getUser = async (req: Request, res: Response) => {
+		
+
+	};
 }
-export default userController;

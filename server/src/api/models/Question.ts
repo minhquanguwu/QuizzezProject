@@ -8,6 +8,7 @@ const answerSchema = new Schema({
 	isCorrect: Boolean,
 });
 const questionSchema = new Schema({
+	category: String,
 	question: {
 		type: String,
 		require: true,
@@ -15,7 +16,7 @@ const questionSchema = new Schema({
 	answerList: [answerSchema] as SchemaDefinitionProperty,
 });
 
-const QuestionModel = model('Question', questionSchema);
+export const QuestionModel = model('Question', questionSchema);
 
 export default class Question {
 	private question: string;
@@ -26,7 +27,9 @@ export default class Question {
 			isCorrect: boolean;
 		}
 	];
+	private category: string;
 	constructor(
+		category: string,
 		question: string,
 		answerList: [
 			{
@@ -38,6 +41,7 @@ export default class Question {
 	) {
 		this.question = question;
 		this.answerList = answerList;
+		this.category = category;
 	}
 
 	getQuestion(): string {
@@ -68,5 +72,11 @@ export default class Question {
 		]
 	): void {
 		this.answerList = answerList;
+	}
+	getCategory(): string {
+		return this.category;
+	}
+	setCategory(category: string): void {
+		this.category = category;
 	}
 }
