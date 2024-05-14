@@ -109,6 +109,7 @@ export default function Dashboard() {
             setProgress((Date.now() - gazeOnCardStart) / 30);
             if (Date.now() - gazeOnCardStart >= 3000) {
                 console.log("bo m clicked");
+                GazeCloudAPI.StopEyeTracking();
                 currentCard.click();
                 gazeOnCardStart = null;
                 currentCard = null;
@@ -118,16 +119,13 @@ export default function Dashboard() {
 
     return (
         <div>
-            <Script src="https://api.gazerecorder.com/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+            <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+
             <div
                 id="gaze"
                 className="absolute none w-24 h-24 rounded-full border-2 border-opacity-20 shadow-lg pointer-events-none z-50 "
             >
-                <CircularProgressbar
-                    value={progress}
-                    text={`${Math.round(progress)}%`}
-                    background
-                />
+                <CircularProgressbar value={progress} text={`${Math.round(progress)}%`} />
             </div>
 
             <div className="flex flex-row justify-center font-sans">

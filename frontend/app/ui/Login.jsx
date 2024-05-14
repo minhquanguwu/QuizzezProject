@@ -37,12 +37,12 @@ function Login() {
         },
         {
             id: "88421e2c-ca7a-4332-815f-6e12824e2d05",
-            fullName: "Sophia Smith",
+            fullName: "Pham Minh Quang",
             picture: "/88421e2c-ca7a-4332-815f-6e12824e2d05/1.jpg",
         },
         {
             id: "0c2f5599-9296-4f94-97d5-e773043188ae",
-            fullName: "Emily Martinez",
+            fullName: "Minh Quang Pham",
             picture: "/0c2f5599-9296-4f94-97d5-e773043188ae/1.jpg",
         },
     ];
@@ -98,7 +98,7 @@ function Login() {
                     "faceAuth",
                     JSON.stringify({ status: true, account: tempAccount })
                 );
-                router.push("/dashboard");
+                router.push("/protected");
             }
 
             return () => clearInterval(counterInterval);

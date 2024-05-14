@@ -2,17 +2,106 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import { useRef, useState } from "react";
+import Script from "next/script";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function Dashboard() {
+    var gazeOnCardStart = null;
+    var currentCard = null;
+    const cardRefs = useRef([]);
+    const [progress, setProgress] = useState(0);
+    const handleGaze = () => {
+        // Starts eye tracking
+        GazeCloudAPI.StartEyeTracking();
+        // Users can click to recalibrate in real time
+        GazeCloudAPI.UseClickRecalibration = true;
+        GazeCloudAPI.OnResult = (GazeData) => PlotGaze(GazeData);
+    };
     const router = useRouter();
+
+    function PlotGaze(GazeData) {
+        /*
+            GazeData.state // 0: valid gaze data; -1 : face tracking lost, 1 : gaze uncalibrated
+            GazeData.docX // gaze x in document coordinates
+            GazeData.docY // gaze y in document cordinates
+            GazeData.time // timestamp
+        */
+        var docx = GazeData.docX;
+        var docy = GazeData.docY;
+
+        var gaze = document.getElementById("gaze");
+        docx -= gaze.clientWidth / 2;
+        docy -= gaze.clientHeight / 2;
+
+        gaze.style.left = docx + "px";
+        gaze.style.top = docy + "px";
+
+        if (GazeData.state != 0) {
+            if (gaze.style.display == "block") gaze.style.display = "none";
+        } else {
+            if (gaze.style.display == "none") gaze.style.display = "block";
+        }
+
+        var gazeOnCard = false;
+        var cards = cardRefs.current;
+        console.log(cards);
+        cards.forEach((card) => {
+            var cardRect = card.getBoundingClientRect();
+            console.log(cardRect);
+
+            if (
+                docx >= cardRect.left &&
+                docx <= cardRect.right &&
+                docy >= cardRect.top &&
+                docy <= cardRect.bottom
+            ) {
+                gazeOnCard = true;
+                if (currentCard !== card) {
+                    currentCard = card;
+                    gazeOnCardStart = Date.now();
+                }
+            }
+        });
+
+        if (!gazeOnCard) {
+            gazeOnCardStart = null;
+            currentCard = null;
+        } else {
+            setProgress((Date.now() - gazeOnCardStart) / 30);
+            if (Date.now() - gazeOnCardStart >= 3000) {
+                console.log("bo m clicked");
+                GazeCloudAPI.StopEyeTracking();
+                currentCard.click();
+                gazeOnCardStart = null;
+                currentCard = null;
+            }
+        }
+    }
 
     return (
         <div>
+            <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+            <div
+                id="gaze"
+                className="absolute none w-24 h-24 rounded-full border-2 border-opacity-20 shadow-lg text-center pointer-events-none z-50 "
+            >
+                <CircularProgressbar
+                    value={progress}
+                    text={`${Math.round(progress)}%`}
+                    strokeWidth={10}
+                    styles={buildStyles({
+                        pathColor: "turquoise",
+                        trailColor: "blue-100",
+                    })}
+                />
+            </div>
             <div className="uppercase text-5xl font-bold font-mono py-4">
                 What do you want to do today?
             </div>
             <div className="flex flex-row gap-10 pt-20">
                 <Card
+                    ref={(el) => (cardRefs.current[0] = el)}
                     className="py-4 bg-orange-300 h-[350px] "
                     isPressable
                     onClick={() => router.push(`/dashboard/quiz`)}
@@ -34,6 +123,7 @@ export default function Dashboard() {
                 </Card>
                 <div className="border-r-4 border-gray-600 h-auto mx-4"></div>
                 <Card
+                    ref={(el) => (cardRefs.current[1] = el)}
                     className="py-4 bg-violet-300 h-[350px]"
                     isPressable
                     onClick={() => router.push(`/dashboard/study`)}

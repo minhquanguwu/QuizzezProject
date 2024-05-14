@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import AnswerCard from "../../ui/Card";
+import { CircularProgressbar } from "react-circular-progressbar";
 import React, { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import { CardBody, Card, Chip, Progress, CardHeader, CardFooter } from "@nextui-org/react";
@@ -16,7 +16,7 @@ export default function Quiz() {
     const router = useRouter();
     const user = JSON.parse(localStorage.getItem("faceAuth"));
     const cardRefs = useRef([]);
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(10);
     var gazeOnCardStart = null;
     var currentCard = null;
     const questionList = [
@@ -123,6 +123,8 @@ export default function Quiz() {
     }, [showAnswer]);
 
     const handleGaze = () => {
+        GazeCloudAPI.StartEyeTracking();
+        GazeCloudAPI.UseClickRecalibration = true;
         GazeCloudAPI.OnResult = (GazeData) => PlotGaze(GazeData);
         console.log(cardRefs.current);
     };
@@ -187,7 +189,14 @@ export default function Quiz() {
 
     return (
         <div className="h-full">
-            <Script src="https://api.gazerecorder.com/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+            <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+
+            <div
+                id="gaze"
+                className="absolute none w-24 h-24 rounded-full border-2 border-opacity-20 shadow-lg pointer-events-none z-50 "
+            >
+                <CircularProgressbar value={progress} text={`${Math.round(progress)}%`} />
+            </div>
             {showUserResult && (
                 <div className="grid grid-rows-6 gap-4 p-4 h-[95%] text-white bg-[#230D21] rounded-lg shadow-lg max-w-md mx-auto font-serif my-2 mt-4">
                     <div className="text-3xl font-bold pt-4 text-center uppercase font-sans">
@@ -247,11 +256,6 @@ export default function Quiz() {
             )}
             {!showUserResult && (
                 <div className="h-full grid grid-rows-15">
-                    <div
-                        id="gaze"
-                        className="absolute none w-24 h-24 rounded-full border-2 border-white border-opacity-20 shadow-lg pointer-events-none z-50 bg-red-400"
-                    ></div>
-                    <Script src="https://api.gazerecorder.com/GazeCloudAPI.js"></Script>
                     <div className="row-span-1 flex flex-row text-white items-center ml-3">
                         <Chip size="lg" variant="faded">
                             {currentQuestionIndex + 1}/{questionList.length}
