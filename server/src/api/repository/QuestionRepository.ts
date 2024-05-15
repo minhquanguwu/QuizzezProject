@@ -74,4 +74,29 @@ export default class QuestionRepository {
 			return { ok: false, data: null };
 		}
 	};
+
+	public getAllCategories = async () => {
+		try {
+			const query = await QuestionModel.find().select({ category: 1, _id: 0 });
+			const category = new Set();
+			query.forEach((d) => {
+				category.add(d.category);
+			});
+			const res: string[] = [];
+			category.forEach((cat) => {
+				res.push(String(cat));
+			});
+			console.log(category);
+			return {
+				ok: true,
+				data: res,
+			};
+		} catch (error) {
+			console.log('Error fetching all categories', error.msg);
+			return {
+				ok: false,
+				data: null,
+			};
+		}
+	};
 }

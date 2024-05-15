@@ -77,4 +77,16 @@ export default class QuestionController {
 			code: 200,
 		});
 	};
+	public getAllCategory = async (req: Request, res: Response) => {
+		const { ok, data } = await new QuestionRepository().getAllCategories();
+		if (!ok)
+			return res.status(400).json({
+				code: 400,
+				data: null,
+			});
+		return res.status(200).json({
+			code: 200,
+			data,
+		});
+	};
 }
