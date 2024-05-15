@@ -1,11 +1,14 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import React, { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import { CardBody, Card, Chip, Progress, CardHeader, CardFooter } from "@nextui-org/react";
 import { CSSTransition } from "react-transition-group";
 import { Button, Image } from "@nextui-org/react";
+import * as quizServices from "../../apiService/quizService";
+
 export default function Quiz() {
     const letters = ["A", "B", "C", "D", "E", "F"];
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
@@ -17,85 +20,116 @@ export default function Quiz() {
     const user = JSON.parse(localStorage.getItem("faceAuth"));
     const cardRefs = useRef([]);
     const [progress, setProgress] = useState(10);
+    const [questionList, setQuestionList] = useState([
+        {
+            question: "",
+            answerList: [],
+        },
+    ]);
     var gazeOnCardStart = null;
     var currentCard = null;
-    const questionList = [
-        {
-            question: "What is the capital of France?",
-            answerList: [
-                {
-                    body: "Answer 1",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: true,
-                },
-                {
-                    body: "Answer 2",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-                {
-                    body: "Answer 3",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: true,
-                },
-                {
-                    body: "Answer 4",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-            ],
-        },
-        {
-            question: "1+1=?",
-            answerList: [
-                {
-                    body: "Answer 1",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-                {
-                    body: "Answer 2",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-                {
-                    body: "Answer 3",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: true,
-                },
-                {
-                    body: "Answer 4",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-            ],
-        },
-        {
-            question: "What is the capital of Germany?",
-            answerList: [
-                {
-                    body: "Answer 1",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-                {
-                    body: "Answer 2",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-                {
-                    body: "Answer 3",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: true,
-                },
-                {
-                    body: "Answer 4",
-                    image: "https://nextui.org/images/hero-card.jpeg",
-                    isCorrect: false,
-                },
-            ],
-        },
-    ];
+    const category = useParams().fieldId.toLowerCase();
+    console.log(category);
+
+    const fetchData = async () => {
+        try {
+            const response = await quizServices.getQuestionByCategory(category);
+            console.log(`hello ${JSON.stringify(response)}`);
+            const mapQuestion = response.map((question) => {
+                return {
+                    question: question.question,
+                    answerList: question.answerList,
+                };
+            });
+            console.log(mapQuestion);
+            setQuestionList(mapQuestion);
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    // const questionList = [
+    //     {
+    //         question: "What is the capital of France?",
+    //         answerList: [
+    //             {
+    //                 body: "Answer 1",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: true,
+    //             },
+    //             {
+    //                 body: "Answer 2",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //             {
+    //                 body: "Answer 3",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: true,
+    //             },
+    //             {
+    //                 body: "Answer 4",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         question: "1+1=?",
+    //         answerList: [
+    //             {
+    //                 body: "Answer 1",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //             {
+    //                 body: "Answer 2",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //             {
+    //                 body: "Answer 3",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: true,
+    //             },
+    //             {
+    //                 body: "Answer 4",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //         ],
+    //     },
+    //     {
+    //         question: "What is the capital of Germany?",
+    //         answerList: [
+    //             {
+    //                 body: "Answer 1",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //             {
+    //                 body: "Answer 2",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //             {
+    //                 body: "Answer 3",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: true,
+    //             },
+    //             {
+    //                 body: "Answer 4",
+    //                 image: "https://nextui.org/images/hero-card.jpeg",
+    //                 isCorrect: false,
+    //             },
+    //         ],
+    //     },
+    // ];
 
     const handleAnswerClick = (isCorrect) => {
         isCorrect && setResult(result + 1);
@@ -116,7 +150,7 @@ export default function Quiz() {
                     setShowUserResult(true);
                     console.log("All questions have been answered");
                 }
-            }, 2000); // Change this to the duration of your animation
+            }, 2000); // duration of your animation
 
             return () => clearTimeout(timer);
         }
@@ -269,7 +303,7 @@ export default function Quiz() {
                         </div>
                         <div className="flex flex-row justify-between row-span-5">
                             {questionList[currentQuestionIndex].answerList.map((answer, index) => (
-                                <CSSTransition in={showAnswer} timeout={2000} classNames="answer">
+                                <CSSTransition in={showAnswer} timeout={1500} classNames="answer">
                                     {/* <AnswerCard
                                         answer={answer}
                                         key={index}

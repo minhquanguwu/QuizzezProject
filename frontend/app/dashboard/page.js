@@ -5,6 +5,7 @@ import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import { useRef, useState } from "react";
 import Script from "next/script";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 export default function Dashboard() {
     var gazeOnCardStart = null;

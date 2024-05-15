@@ -6,11 +6,14 @@ import { Image } from "@nextui-org/image";
 import { CardBody, Card, Chip, CardHeader, CardFooter, Button } from "@nextui-org/react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import * as quizServices from "../../apiService/quizService";
+
 export default function Dashboard() {
     var gazeOnCardStart = null;
     var currentCard = null;
     const cardRefs = useRef([]);
     const [progress, setProgress] = useState(0);
+    const [categoryList, setCategoryList] = useState([""]);
     const handleGaze = () => {
         // Starts eye tracking
         GazeCloudAPI.StartEyeTracking();
@@ -25,38 +28,20 @@ export default function Dashboard() {
         router.push(`/playing/${type}`);
     };
 
-    const questionList = [
-        {
-            type: "Sciene",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-        {
-            type: "Mathematics",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-        {
-            type: "Sports",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-        {
-            type: "Sciene",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-        {
-            type: "Sciene",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-        {
-            type: "Sciene",
-            image: "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
-            description: "Discover the world of science",
-        },
-    ];
+    const fetchData = async () => {
+        try {
+            const response = await quizServices.getAllCategories();
+            console.log(`hello ${JSON.stringify(response)}`);
+            setCategoryList(response);
+        } catch (error) {
+            // Handle errors
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     function PlotGaze(GazeData) {
         /*
@@ -138,27 +123,27 @@ export default function Dashboard() {
                 </h1>
             </div>
             <div className="max-w-[1000px] gap-6 grid grid-cols-12 grid-rows-2 px-8">
-                {questionList.map((question, index) => (
+                {categoryList.map((category, index) => (
                     <Card
                         ref={(el) => (cardRefs.current[index] = el)}
                         className="col-span-2 sm:col-span-4 h-[280px]"
                         key={index}
                         isPressable
-                        onClick={() => handleCardClick(question.type)}
+                        onClick={() => handleCardClick(category)}
                     >
                         <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                             <p className="text-tiny text-white/60 uppercase font-bold">
-                                {question.description}
+                                Explore the world!
                             </p>
                             <h4 className="text-white font-medium text-large uppercase">
-                                {question.type}
+                                {category}
                             </h4>
                         </CardHeader>
                         <Image
                             removeWrapper
                             alt="Card background"
                             className="z-0 w-full h-full object-cover"
-                            src={question.image}
+                            src="https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg"
                         />
                     </Card>
                 ))}
