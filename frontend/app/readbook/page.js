@@ -1,16 +1,18 @@
-'use client'
-import dynamic from 'next/dynamic'
-import React from 'react';
-import { useRef, useEffect } from 'react';
-import Script from 'next/script'
+"use client";
+import dynamic from "next/dynamic";
+import React, { useRef, useEffect } from "react";
+import Script from "next/script";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
-const PDFViewer = dynamic(() => import('../components/PDFViewer'), {
-    ssr: false
-  });
+const PDFViewer = dynamic(() => import("../components/PDFViewer"), {
+    ssr: false,
+});
 
-const readBook = () => {
+export default function ReadBook() {
+    const fileUrl = "pdf/DSA.pdf";
+    const iframeRef = useRef(null);
 
-    const fileUrl = 'pdf/DSA.pdf';
     const handleGaze = () => {
         // Starts eye tracking
         GazeCloudAPI.StartEyeTracking();
@@ -19,43 +21,48 @@ const readBook = () => {
         GazeCloudAPI.OnResult = (GazeData) => GazeScrolling(GazeData);
     };
 
-
     function GazeScrolling(GazeData) {
-        const canvasRef = useRef(null);
-        const { x, y } = GazeData;
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-        const circleRadius = 10;
+        console.log(GazeData);
+        var docx = GazeData.docX;
+        var docy = GazeData.docY;
 
-        // Clear the canvas
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        var gaze = document.getElementById("gaze");
+        docx -= gaze.clientWidth / 2;
+        docy -= gaze.clientHeight / 2;
 
-        // Draw the circle at the gaze position
-        context.beginPath();
-        context.arc(x, y, circleRadius, 0, 2 * Math.PI);
-        context.fillStyle = 'red';
-        context.fill();
+        gaze.style.left = docx + "px";
+        gaze.style.top = docy + "px";
 
-        // Scroll the webpage based on the gaze position
-        if (y < circleRadius) {
-            window.scrollBy(0, -10); // Scroll up
-        } else if (y > canvasHeight - circleRadius) {
-            window.scrollBy(0, 10); // Scroll down
+        if (GazeData.state != 0) {
+            if (gaze.style.display == "block") gaze.style.display = "none";
+        } else {
+            if (gaze.style.display == "none") gaze.style.display = "block";
+        }
+
+        if (GazeData.GazeY > 800) {
+            window.scrollBy(0, 50);
+        } else if (GazeData.GazeY < 350) {
+            window.scrollBy(0, -50);
         }
     }
 
-
-
-
     return (
-        <div className="pdf-container">
+        <div className="h-screen">
             <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
-            <PDFViewer fileUrl={fileUrl}></PDFViewer>
+            <div
+                id="gaze"
+                className="absolute none w-24 h-24 rounded-full border-2 border-opacity-20 shadow-lg pointer-events-none z-50 "
+            >
+                <CircularProgressbar value={0} />
+            </div>
+            <iframe
+                src={fileUrl}
+                id="iframe"
+                height="50000"
+                width="100%"
+                ref={iframeRef}
+                allowFullScreen
+            ></iframe>
         </div>
     );
-};
-
-
-export default readBook;
+}

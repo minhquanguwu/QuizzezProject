@@ -17,7 +17,7 @@ const links = [
         href: "/dashboard/quiz",
         icon: DocumentDuplicateIcon,
     },
-    { name: "Reading", href: "/dashboard/study", icon: NewspaperIcon },
+    { name: "Reading", href: "/dashboard/reading", icon: NewspaperIcon },
 ];
 
 export default function NavLinks() {

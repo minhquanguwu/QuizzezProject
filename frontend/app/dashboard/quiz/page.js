@@ -104,7 +104,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
+            {/* <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script> */}
 
             <div
                 id="gaze"
