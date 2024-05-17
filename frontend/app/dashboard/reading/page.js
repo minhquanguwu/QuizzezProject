@@ -4,23 +4,16 @@ import {Card, CardHeader, CardBody, Image, Button} from "@nextui-org/react";
 import { useRouter } from "next/navigation"
 
 
-const books = [
-    {name : "Data Structure and Algorithm", url:"../reading/dsa"}
-]
-
 export default function StudyPage() {
 
-    const router = useRouter();
+    const router = useRouter()
 
-    const handleCardClick = (url) => {
-        router.push(url)
-    }
+
     return (
         
         <div className="flex h-screen flex-col md:flex-row md:overflow-hidden bg-[#F2F2F2]">
             <div className="flex flex-wrap space-x-2 flex-row mt-8 overflow-y-auto max-h-screen ">
-            {books.map((book, index)=>(
-            <Card key={index} className="pb-4 mb-10 py-3 mb-10 " isPressable onClick={handleCardClick(book.url)}>
+            <Card className="pb-4 mb-10 py-3 mb-10 " isPressable onClick={() => router.push('/readbook/')}>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start ">
                  <p className="text-tiny uppercase font-bold">Science</p>
                 <small className="text-default-500">500 pages</small>
@@ -36,7 +29,6 @@ export default function StudyPage() {
                 
             </CardBody>
             </Card>
-            ))}
             
             <Card className="py-3 mb-10" isPressable >
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -56,7 +48,7 @@ export default function StudyPage() {
             </CardBody>
             </Card>
 
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Science</p>
                 <small className="text-default-500">944 pages</small>
@@ -74,7 +66,7 @@ export default function StudyPage() {
             </CardBody>
             </Card>
 
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Science</p>
                 <small className="text-default-500">190 pages</small>
@@ -93,7 +85,7 @@ export default function StudyPage() {
             </CardBody>
             </Card>
 
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Economics and Bussiness</p>
                 <small className="text-default-500">321 pages</small>
@@ -111,7 +103,7 @@ export default function StudyPage() {
             </CardBody>
             </Card>
 
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Economics and Bussiness</p>
                 <small className="text-default-500">354 pages</small>
@@ -129,7 +121,7 @@ export default function StudyPage() {
             </CardBody>
             </Card>
 
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Language and Cultural</p>
                 <small className="text-default-500">286 pages</small>
@@ -146,7 +138,7 @@ export default function StudyPage() {
 
             </CardBody>
             </Card>
-            <Card className="py-3 mb-10">
+            <Card className="py-3 mb-10" isPressable>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                  <p className="text-tiny uppercase font-bold">Physics</p>
                 <small className="text-default-500">500 pages</small>
