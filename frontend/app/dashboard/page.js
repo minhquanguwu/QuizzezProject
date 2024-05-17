@@ -127,7 +127,7 @@ export default function Dashboard() {
                     ref={(el) => (cardRefs.current[1] = el)}
                     className="py-4 bg-violet-300 h-[350px]"
                     isPressable
-                    onClick={() => router.push(`/dashboard/study`)}
+                    onClick={() => router.push(`/dashboard/reading`)}
                 >
                     <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                         <p className="text-tiny font-bold">Reading new information</p>
