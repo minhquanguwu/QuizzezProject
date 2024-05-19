@@ -43,6 +43,15 @@ export default function Dashboard() {
         fetchData();
     }, []);
 
+    const backgroundList = [
+        "https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg",
+        "https://wallpapers.com/images/featured/best-sports-background-9mo6eiyv8hxj5jln.jpg",
+        "https://www.brainscape.com/academy/content/images/size/w620/2020/08/Geography-maps.jpeg",
+        "https://www1.wellesley.edu/albright/sites/www.wellesley.edu.albright/files/styles/large/public/field/image/Image-for-VD-post_smaller.jpg?itok=CxzOi_GV",
+        "https://www.dreamerswriting.com/wp-content/uploads/2023/12/Point-of-view.jpg",
+        "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2024/03/woman-listening-to-music-with-headphones.jpg",
+    ];
+
     function PlotGaze(GazeData) {
         /*
             GazeData.state // 0: valid gaze data; -1 : face tracking lost, 1 : gaze uncalibrated
@@ -104,7 +113,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            {/* <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script> */}
+            <Script src="/GazeCloudAPI.js" onLoad={handleGaze}></Script>
 
             <div
                 id="gaze"
@@ -143,7 +152,7 @@ export default function Dashboard() {
                             removeWrapper
                             alt="Card background"
                             className="z-0 w-full h-full object-cover"
-                            src="https://thumbs.dreamstime.com/b/science-background-illustration-scientific-design-flasks-glass-chemistry-physics-elements-generative-ai-271589343.jpg"
+                            src={backgroundList[index]}
                         />
                     </Card>
                 ))}

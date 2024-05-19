@@ -28,7 +28,7 @@ export default function Quiz() {
     ]);
     var gazeOnCardStart = null;
     var currentCard = null;
-    const category = useParams().fieldId.toLowerCase();
+    const category = useParams().fieldId;
     console.log(category);
 
     const fetchData = async () => {
